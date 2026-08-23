@@ -1,6 +1,7 @@
 import glm
+import typing
+
 from enum import Enum, auto
-from typing import *
 from math import *
 
 # Define várias opções possíveis para o movimento da câmera. Utilizado como uma abstração para evitar a dependência de métodos de entrada específicos do sistema de janelas.
@@ -35,19 +36,75 @@ class Camera:
     MouseSensitivity: float
     Zoom: float
 
-    # construtor com vetores
-    def __init__(self, position = glm.vec3(0.0, 0.0, 0.0), up = glm.vec3(0.0, 1.0, 0.0), yaw = YAW, pitch = PITCH):
+    @typing.overload
+    def __init__(self, position: tuple, up: tuple, yaw: Yaw, pitch: Pitch):
+        pass
+
+    @typing.overload
+    def __init__(
+        self,
+        posX: float,
+        posY: float,
+        posZ: float,
+        upX: float,
+        upY: float,
+        upZ: float,
+        yaw: Yaw,
+        pitch: Pitch
+    ):
+        pass
+
+    def __init__(
+            self,
+            position: tuple | None = None,
+            up: tuple | None = None,
+
+            posX: float | None = None,
+            posY: float | None  = None,
+            posZ: float | None = None,
+            upX: float | None = None,
+            upY: float | None = None,
+            upZ: float | None = None,
+
+            yaw: Yaw | None = None,
+            pitch: Pitch | None = None,
+        ):
+
         self.Front = glm.vec3(0.0, 0.0, -1.0)
         self.MovementSpeed = SPEED
         self.MouseSensitivity = SENSITIVITY
         self.Zoom = ZOOM
 
-        self.Position = position
-        self.WorldUp = up
-        self.Yaw = yaw
-        self.Pitch = pitch
+        if position is not None or up is not None:
+            self.Position = glm.vec3(*(position or (0.0, 0.0, 0.0)))
+            self.WorldUp  = glm.vec3(*(up or (0.0, 1.0, 0.0)))
 
+        elif None not in (posX, posY, posZ, upX, upY, upZ):
+            self.Position = glm.vec3(posX, posY, posZ)
+            self.WorldUp  = glm.vec3(upX, upY, upZ)
+        
+        else:
+            self.Position = glm.vec3(0.0, 0.0, 0.0)
+            self.WorldUp  = glm.vec3(0.0, 1.0, 0.0)
+
+        self.Yaw   = yaw if yaw is not None else YAW
+        self.Pitch = pitch if pitch is not None else PITCH        
+        
         self.updateCameraVectors()
+
+    # # construtor com vetores
+    # def __init__(self, position = glm.vec3(0.0, 0.0, 0.0), up = glm.vec3(0.0, 1.0, 0.0), yaw = YAW, pitch = PITCH):
+    #     self.Front = glm.vec3(0.0, 0.0, -1.0)
+    #     self.MovementSpeed = SPEED
+    #     self.MouseSensitivity = SENSITIVITY
+    #     self.Zoom = ZOOM
+    #
+    #     self.Position = position
+    #     self.WorldUp = up
+    #     self.Yaw = yaw
+    #     self.Pitch = pitch
+    #
+    #     self.updateCameraVectors()
 
     # construtor com valores escalares
     # def __init__(self, posX, posY, posZ, upX, upY, upZ, yaw, pitch):
