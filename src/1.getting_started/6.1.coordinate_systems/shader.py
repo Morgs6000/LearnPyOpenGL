@@ -1,3 +1,4 @@
+import glm
 from pathlib import *
 from OpenGL.GL import *
 
@@ -65,6 +66,39 @@ class Shader:
     def setFloat(self, name, value: float):
         location = glGetUniformLocation(self.ID, name)
         glUniform1i(location, value)
+    # --------------------------------------------------
+    def setVec2(self, name, x, y):
+        location = glGetUniformLocation(self.ID, name)
+        glUniform2i(location, x, y)
+    def setVec2(self, name, value: glm.vec2):
+        location = glGetUniformLocation(self.ID, name)
+        glUniform2i(location, value)
+    # --------------------------------------------------
+    def setVec3(self, name, x, y, z):
+        location = glGetUniformLocation(self.ID, name)
+        glUniform3i(location, x, y, z)
+    def setVec3(self, name, value: glm.vec3):
+        location = glGetUniformLocation(self.ID, name)
+        glUniform3i(location, value)
+    # --------------------------------------------------
+    def setVec4(self, name, x, y, z, w):
+        location = glGetUniformLocation(self.ID, name)
+        glUniform4i(location, x, y, z, w)
+    def setVec4(self, name, value: glm.vec4):
+        location = glGetUniformLocation(self.ID, name)
+        glUniform4i(location, value)
+    # --------------------------------------------------
+    def setMat2(self, name, mat: glm.mat2):
+        location = glGetUniformLocation(self.ID, name)
+        glUniformMatrix2fv(location, 1, GL_FALSE, glm.value_ptr(mat))
+    # --------------------------------------------------
+    def setMat3(self, name, mat: glm.mat3):
+        location = glGetUniformLocation(self.ID, name)
+        glUniformMatrix3fv(location, 1, GL_FALSE, glm.value_ptr(mat))
+    # --------------------------------------------------
+    def setMat4(self, name, mat: glm.mat4):
+        location = glGetUniformLocation(self.ID, name)
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm.value_ptr(mat))
 
     # função utilitária para verificar erros de compilação/vinculação de shaders.
     # --------------------------------------------------
