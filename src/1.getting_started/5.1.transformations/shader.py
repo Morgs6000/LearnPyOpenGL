@@ -64,7 +64,7 @@ class Shader:
     # --------------------------------------------------
     def setFloat(self, name, value: float):
         location = glGetUniformLocation(self.ID, name)
-        glUniform1i(location, value)
+        glUniform1f(location, value)
 
     # função utilitária para verificar erros de compilação/vinculação de shaders.
     # --------------------------------------------------

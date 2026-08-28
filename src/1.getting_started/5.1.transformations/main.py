@@ -179,7 +179,7 @@ def main():
         glBindVertexArray(VAO)
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, None)
 
-        # // glfw: troca os buffers e processa eventos de E/S (teclas pressionadas/liberadas, movimento do mouse, etc.)
+        # glfw: troca os buffers e processa eventos de E/S (teclas pressionadas/liberadas, movimento do mouse, etc.)
         # --------------------------------------------------
         glfw.swap_buffers(window)
         glfw.poll_events()

@@ -65,28 +65,28 @@ class Shader:
     # --------------------------------------------------
     def setFloat(self, name, value: float):
         location = glGetUniformLocation(self.ID, name)
-        glUniform1i(location, value)
+        glUniform1f(location, value)
     # --------------------------------------------------
     def setVec2(self, name, x, y):
         location = glGetUniformLocation(self.ID, name)
-        glUniform2i(location, x, y)
+        glUniform1f(location, x, y)
     def setVec2(self, name, value: glm.vec2):
         location = glGetUniformLocation(self.ID, name)
-        glUniform2i(location, value)
+        glUniform1fv(location, value)
     # --------------------------------------------------
     def setVec3(self, name, x, y, z):
         location = glGetUniformLocation(self.ID, name)
-        glUniform3i(location, x, y, z)
+        glUniform1f(location, x, y, z)
     def setVec3(self, name, value: glm.vec3):
         location = glGetUniformLocation(self.ID, name)
-        glUniform3i(location, value)
+        glUniform1fv(location, value)
     # --------------------------------------------------
     def setVec4(self, name, x, y, z, w):
         location = glGetUniformLocation(self.ID, name)
-        glUniform4i(location, x, y, z, w)
+        glUniform1f(location, x, y, z, w)
     def setVec4(self, name, value: glm.vec4):
         location = glGetUniformLocation(self.ID, name)
-        glUniform4i(location, value)
+        glUniform1fv(location, value)
     # --------------------------------------------------
     def setMat2(self, name, mat: glm.mat2):
         location = glGetUniformLocation(self.ID, name)
