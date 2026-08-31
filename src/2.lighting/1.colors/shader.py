@@ -69,24 +69,27 @@ class Shader:
     # --------------------------------------------------
     def setVec2(self, name, x, y):
         location = glGetUniformLocation(self.ID, name)
-        glUniform1f(location, x, y)
-    def setVec2(self, name, value: glm.vec2):
-        location = glGetUniformLocation(self.ID, name)
-        glUniform1fv(location, value)
+        glUniform2f(location, x, y)
+    # def setVec2(self, name, value: glm.vec2):
+    #     location = glGetUniformLocation(self.ID, name)
+    #     glUniform2fv(location, value)
+
+    # PYTHON É LIXO, NÃO ACEITA SOBRECARGA
+    
     # --------------------------------------------------
     def setVec3(self, name, x, y, z):
         location = glGetUniformLocation(self.ID, name)
-        glUniform1f(location, x, y, z)
-    def setVec3(self, name, value: glm.vec3):
-        location = glGetUniformLocation(self.ID, name)
-        glUniform1fv(location, value)
+        glUniform3f(location, x, y, z)
+    # def setVec3(self, name, value: glm.vec3):
+    #     location = glGetUniformLocation(self.ID, name)
+    #     glUniform3fv(location, value)
     # --------------------------------------------------
     def setVec4(self, name, x, y, z, w):
         location = glGetUniformLocation(self.ID, name)
-        glUniform1f(location, x, y, z, w)
-    def setVec4(self, name, value: glm.vec4):
-        location = glGetUniformLocation(self.ID, name)
-        glUniform1fv(location, value)
+        glUniform4f(location, x, y, z, w)
+    # def setVec4(self, name, value: glm.vec4):
+    #     location = glGetUniformLocation(self.ID, name)
+    #     glUniform4fv(location, value)
     # --------------------------------------------------
     def setMat2(self, name, mat: glm.mat2):
         location = glGetUniformLocation(self.ID, name)

@@ -122,16 +122,16 @@ def main():
         -0.5,  0.5,  0.5
     ], 'f')
 
-    VAO = glGenVertexArrays(1)
+    cubeVAO = glGenVertexArrays(1)
     VBO = glGenBuffers(1)
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO)
     glBufferData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW)
 
-    glBindVertexArray(VAO)
+    glBindVertexArray(cubeVAO)
 
     # position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(c_float), c_void_p(0))
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(c_float), c_void_p(0))
     glEnableVertexAttribArray(0)
 
     # segundo, configure o VAO da luz (o VBO permanece o mesmo; os vértices são os mesmos para o objeto de luz, que também é um cubo 3D)
@@ -141,7 +141,7 @@ def main():
     # precisamos apenas vincular o VBO (para associá-lo ao glVertexAttribPointer), sem necessidade de preenchê-lo; os dados do VBO já contêm tudo o que precisamos (ele já está vinculado, mas fazemos isso novamente para fins didáticos)
     glBindBuffer(GL_ARRAY_BUFFER, VBO)
 
-    glVertexPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(c_float), c_void_p(0))
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(c_float), c_void_p(0))
     glEnableVertexAttribArray(0)
 
     # loop de renderização
@@ -168,6 +168,37 @@ def main():
         lightingShader.setVec3("lightColor", 1.0, 1.0, 1.0)
 
         # transformações de visualização/projeção
+        projection = glm.perspective( 
+            glm.radians(camera.Zoom), 
+            SCR_WIDTH / SCR_HEIGHT, 
+            0.1, 
+            100.0
+        )
+        view = camera.GetViewMatrix()
+
+        lightingShader.setMat4("projection", projection)
+        lightingShader.setMat4("view", view)
+
+        # transformação do mundo
+        model = glm.mat4(1.0)
+        lightingShader.setMat4("model", model)
+
+        # renderiza o cubo
+        glBindVertexArray(cubeVAO)
+        glDrawArrays(GL_TRIANGLES, 0, 36)
+
+        # também desenhe o objeto da lâmpada
+        lightCubeShader.use()
+        lightCubeShader.setMat4("projection", projection)
+        lightCubeShader.setMat4("view", view)
+
+        model = glm.mat4(1.0)
+        model = glm.translate(model, lightPos)
+        model = glm.scale(model, glm.vec3(0.2)) # um cubo menor
+        lightCubeShader.setMat4("model", model)
+
+        glBindVertexArray(cubeVAO)
+        glDrawArrays(GL_TRIANGLES, 0, 36)
 
         # glfw: troca os buffers e processa eventos de E/S (teclas pressionadas/liberadas, movimento do mouse, etc.)
         # --------------------------------------------------
@@ -176,7 +207,8 @@ def main():
 
     # opcional: desalocar todos os recursos assim que não forem mais necessários:
     # --------------------------------------------------
-    glDeleteVertexArrays(1, [VAO])
+    glDeleteVertexArrays(1, [cubeVAO])
+    glDeleteVertexArrays(1, [lightCubeVAO])
     glDeleteBuffers(1, [VBO])
 
     # glfw: encerra, liberando todos os recursos do GLFW alocados anteriormente.
